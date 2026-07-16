@@ -69,7 +69,7 @@ extern class LuauVM
 	 * @param constant The compile constant to set.
 	 */
 	@:native('luau_set_compile_constant_nil')
-	static function compileConstantNil(constant:cpp.RawPointer<cpp.Void>):Void;
+	static function compileConstantNil(constant:cpp.RawPointer<Lua_CompileConstant>):Void;
 
 	/**
 	 * Sets a compile constant to a boolean.
@@ -77,7 +77,7 @@ extern class LuauVM
 	 * @param b The boolean value.
 	 */
 	@:native('luau_set_compile_constant_boolean')
-	static function compileConstantBoolean(constant:cpp.RawPointer<cpp.Void>, b:Int):Void;
+	static function compileConstantBoolean(constant:cpp.RawPointer<Lua_CompileConstant>, b:Int):Void;
 
 	/**
 	 * Sets a compile constant to a number.
@@ -85,7 +85,7 @@ extern class LuauVM
 	 * @param n The number value.
 	 */
 	@:native('luau_set_compile_constant_number')
-	static function compileConstantNumber(constant:cpp.RawPointer<cpp.Void>, n:Lua_Number):Void;
+	static function compileConstantNumber(constant:cpp.RawPointer<Lua_CompileConstant>, n:Lua_Number):Void;
 
 	/**
 	 * Sets a compile constant to a 64-bit integer.
@@ -93,7 +93,7 @@ extern class LuauVM
 	 * @param l The integer value.
 	 */
 	@:native('luau_set_compile_constant_integer64')
-	static function compileConstantInteger64(constant:cpp.RawPointer<cpp.Void>, l:haxe.Int64):Void;
+	static function compileConstantInteger64(constant:cpp.RawPointer<Lua_CompileConstant>, l:haxe.Int64):Void;
 
 	/**
 	 * Sets a compile constant to a vector.
@@ -104,7 +104,7 @@ extern class LuauVM
 	 * @param w W component.
 	 */
 	@:native('luau_set_compile_constant_vector')
-	static function compileConstantVector(constant:cpp.RawPointer<cpp.Void>, x:Float, y:Float, z:Float, w:Float):Void;
+	static function compileConstantVector(constant:cpp.RawPointer<Lua_CompileConstant>, x:Float, y:Float, z:Float, w:Float):Void;
 
 	/**
 	 * Sets a compile constant to a string.
@@ -113,7 +113,7 @@ extern class LuauVM
 	 * @param l Length of `s`.
 	 */
 	@:native('luau_set_compile_constant_string')
-	static function compileConstantString(constant:cpp.RawPointer<cpp.Void>, s:cpp.ConstCharStar, l:cpp.SizeT):Void;
+	static function compileConstantString(constant:cpp.RawPointer<Lua_CompileConstant>, s:cpp.ConstCharStar, l:cpp.SizeT):Void;
 
 	/**
 	 * Enables the JIT inliner for the given state.

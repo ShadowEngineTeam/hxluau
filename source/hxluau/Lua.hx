@@ -1534,6 +1534,15 @@ extern class Lua
 	static function getuserdatametatable(L:cpp.RawPointer<Lua_State>, tag:Int):Void;
 
 	/**
+	 * Returns the name of a userdata tag - `__type` from the metatable or "userdata" if it is not set.
+	 * @param L Lua state.
+	 * @param tag Userdata tag.
+	 * @return Name of the userdata tag.
+	 */
+	@:native('lua_getuserdataname')
+	static function getuserdataname(L:cpp.RawPointer<Lua_State>, tag:Int):cpp.ConstCharStar;
+
+	/**
 	 * Registers direct __index, __newindex, and __namecall handlers for a userdata tag.
 	 * @param L Lua state.
 	 * @param tag Userdata tag.

@@ -157,6 +157,16 @@ extern class LuaL
 	static function checkudata(L:cpp.RawPointer<Lua_State>, ud:Int, tname:cpp.ConstCharStar):cpp.RawPointer<cpp.Void>;
 
 	/**
+	 * Checks whether the argument is a userdata with the given tag and returns its address.
+	 * @param L Lua state.
+	 * @param ud Argument index.
+	 * @param tag Userdata tag.
+	 * @return Pointer to the userdata.
+	 */
+	@:native('luaL_checkudatatagged')
+	static function checkudatatagged(L:cpp.RawPointer<Lua_State>, ud:Int, tag:Int):cpp.RawPointer<cpp.Void>;
+
+	/**
 	 * Pushes a location string (file and line) for the given call level.
 	 * @param L Lua state.
 	 * @param lvl Stack level.

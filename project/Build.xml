@@ -58,6 +58,7 @@
 		<!-- Luau.Bytecode -->
 		<file name="${haxelib:hxluau}/project/lib/luau/Bytecode/src/BytecodeBuilder.cpp" />
 		<file name="${haxelib:hxluau}/project/lib/luau/Bytecode/src/BytecodeGraph.cpp" />
+		<file name="${haxelib:hxluau}/project/lib/luau/Bytecode/src/Sccp.cpp" />
 
 		<!-- Luau.Compiler -->
 		<file name="${haxelib:hxluau}/project/lib/luau/Compiler/src/BuiltinFolding.cpp" />
