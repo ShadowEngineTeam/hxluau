@@ -484,17 +484,17 @@ void hxluau_set_compile_disabled_builtins(const char* const* disabledBuiltins)
 
 const char* hxluau_version_string()
 {
-    return "Luau 0.729";
+    return "Luau 0.730";
 }
 
 const char* hxluau_version_release()
 {
-    return "Luau 0.729";
+    return "Luau 0.730";
 }
 
 int hxluau_version_num()
 {
-    return 729;
+    return 730;
 }
 
 // Tracks whether the caller opted into codegen counter recording.
