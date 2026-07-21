@@ -48,13 +48,17 @@
 
 #if defined(__GNUC__) || defined(__clang__)
 #  define HAVE_AS_CFI_PSEUDO_OP 1
-#  define HAVE_HIDDEN_VISIBILITY_ATTRIBUTE 1
+#  if !defined(_WIN32)
+#    define HAVE_HIDDEN_VISIBILITY_ATTRIBUTE 1
+#  endif
 #  define HAVE_RO_EH_FRAME 1
 #endif
 
 #define HAVE_ALLOCA 1
 #if !defined(_WIN32) || defined(__MINGW32__)
-#  define HAVE_ALLOCA_H 1
+#  if !defined(__clang__)
+#     define HAVE_ALLOCA_H 1
+#  endif
 #  define HAVE_DLFCN_H 1
 #  define HAVE_INTTYPES_H 1
 #  define HAVE_MEMORY_H 1

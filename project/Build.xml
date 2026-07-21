@@ -188,14 +188,14 @@
 		<file name="${haxelib:hxluau}/project/lib/libffi/src/debug.c" />
 
 		<file name="${haxelib:hxluau}/project/lib/libffi/src/x86/ffi.c" />
-		<file name="${haxelib:hxluau}/project/lib/libffi/src/x86/ffi64.c" />
+		<file name="${haxelib:hxluau}/project/lib/libffi/src/x86/ffi64.c" unless="windows" />
 		<file name="${haxelib:hxluau}/project/lib/libffi/src/x86/ffiw64.c" />
 		<file name="${haxelib:hxluau}/project/lib/libffi/src/aarch64/ffi.c" />
 		<file name="${haxelib:hxluau}/project/lib/libffi/src/arm/ffi.c" />
 
 		<section unless="isMsvc">
 			<section if="HXCPP_M64 || HXCPP_X86_64">
-				<file name="${haxelib:hxluau}/project/lib/libffi/src/x86/unix64.S" />
+				<file name="${haxelib:hxluau}/project/lib/libffi/src/x86/unix64.S" unless="windows" />
 				<file name="${haxelib:hxluau}/project/lib/libffi/src/x86/win64.S" />
 			</section>
 			<section if="HXCPP_ARM64">
