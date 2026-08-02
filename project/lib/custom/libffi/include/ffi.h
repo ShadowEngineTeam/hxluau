@@ -59,7 +59,8 @@ extern "C" {
 #define FFI_TYPE_COMPLEX    15
 #define FFI_TYPE_UINT128    16
 #define FFI_TYPE_SINT128    17
-#define FFI_TYPE_LAST       FFI_TYPE_SINT128
+#define FFI_TYPE_VECTOR     18
+#define FFI_TYPE_LAST       FFI_TYPE_VECTOR
 
 #ifndef LIBFFI_ASM
 
