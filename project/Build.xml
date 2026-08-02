@@ -105,6 +105,7 @@
 		<file name="${haxelib:hxluau}/project/lib/luau/VM/src/ludata.cpp" />
 		<file name="${haxelib:hxluau}/project/lib/luau/VM/src/lutf8lib.cpp" />
 		<file name="${haxelib:hxluau}/project/lib/luau/VM/src/lveclib.cpp" />
+		<file name="${haxelib:hxluau}/project/lib/luau/VM/src/lvector.cpp" />
 		<file name="${haxelib:hxluau}/project/lib/luau/VM/src/lvmexecute.cpp" />
 		<file name="${haxelib:hxluau}/project/lib/luau/VM/src/lvmload.cpp" />
 		<file name="${haxelib:hxluau}/project/lib/luau/VM/src/lvmutils.cpp" />
@@ -150,6 +151,7 @@
 		<!-- Luau.Inliner -->
 		<file name="${haxelib:hxluau}/project/lib/luau/Inliner/src/JitInliner.cpp" />
 		<file name="${haxelib:hxluau}/project/lib/luau/Inliner/src/luajitinliner.cpp" />
+		<file name="${haxelib:hxluau}/project/lib/luau/Inliner/src/TValueVmConstImpl.cpp" />
 	</files>
 
 	<files id="luau-cffi">

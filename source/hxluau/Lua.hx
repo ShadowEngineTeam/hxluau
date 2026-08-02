@@ -750,9 +750,10 @@ extern class Lua
 	 * Releases a reference, letting its value be collected.
 	 * @param L Lua state.
 	 * @param ref Reference id.
+	 * @return Always `Lua.NOREF`; can be assigned back to clear the caller's reference variable.
 	 */
 	@:native('lua_unref')
-	static function unref(L:cpp.RawPointer<Lua_State>, ref:Int):Void;
+	static function unref(L:cpp.RawPointer<Lua_State>, ref:Int):Int;
 
 	/**
 	 * Pushes the value held by a reference (registry rawgeti).

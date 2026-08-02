@@ -69,6 +69,9 @@ extern class Lua_CompileOptions
 	/** Alternative vector type name for type tables, or null. */
 	var vectorType:cpp.ConstCharStar;
 
+	/** 0 for 32-bit float vector components, 1 for 64-bit double components. Default 0. */
+	var vectorPrecision:Int;
+
 	/** Null-terminated list of mutable globals (disables import optimization for their fields), or null. */
 	var mutableGlobals:cpp.RawPointer<cpp.RawConstPointer<cpp.Char>>;
 

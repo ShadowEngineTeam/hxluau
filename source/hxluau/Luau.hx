@@ -136,6 +136,14 @@ extern class Luau
 	static function setCompileVectorCtor(ctor:cpp.ConstCharStar):Void;
 
 	/**
+	 * Sets the vector component precision used by the compiler's constant folding.
+	 * Must match the VM's own LUA_VECTOR_DOUBLE build setting to be meaningful.
+	 * @param precision 0 for 32-bit float components, 1 for 64-bit double components.
+	 */
+	@:native("hxluau_set_compile_vector_precision")
+	static function setCompileVectorPrecision(precision:Int):Void;
+
+	/**
 	 * Sets the globals treated as mutable (disables import optimization for their fields).
 	 * @param globals Null-terminated array of names, or null for none.
 	 */

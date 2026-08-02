@@ -185,20 +185,25 @@ static const char* stripBOM(const char* src, size_t& size)
 }
 
 // Global compile options used by luau_compile.
+// Uses designated initializers (rather than positional) so that upstream Luau
+// inserting/reordering fields in lua_CompileOptions (as happened with the
+// addition of vectorPrecision) fails to compile instead of silently
+// misaligning every field that follows.
 static lua_CompileOptions g_compile_opts = {
-    /*optimizationLevel*/ 2,
-    /*debugLevel*/ 0,
-    /*typeInfoLevel*/ 0,
-    /*coverageLevel*/ 0,
-    /*vectorLib*/ nullptr,
-    /*vectorCtor*/ nullptr,
-    /*vectorType*/ nullptr,
-    /*mutableGlobals*/ nullptr,
-    /*userdataTypes*/ nullptr,
-    /*librariesWithKnownMembers*/ nullptr,
-    /*libraryMemberTypeCb*/ nullptr,
-    /*libraryMemberConstantCb*/ nullptr,
-    /*disabledBuiltins*/ nullptr,
+    .optimizationLevel = 2,
+    .debugLevel = 0,
+    .typeInfoLevel = 0,
+    .coverageLevel = 0,
+    .vectorLib = nullptr,
+    .vectorCtor = nullptr,
+    .vectorType = nullptr,
+    .vectorPrecision = 0,
+    .mutableGlobals = nullptr,
+    .userdataTypes = nullptr,
+    .librariesWithKnownMembers = nullptr,
+    .libraryMemberTypeCb = nullptr,
+    .libraryMemberConstantCb = nullptr,
+    .disabledBuiltins = nullptr,
 };
 
 // Autocompile (hot-counter) state.
@@ -465,6 +470,15 @@ void hxluau_set_compile_vector_ctor(const char* ctor)
 {
     g_vector_ctor = ctor ? ctor : "";
     g_compile_opts.vectorCtor = g_vector_ctor.data();
+}
+
+// 0 = 32-bit float vector components, 1 = 64-bit double components.
+// Note: this only affects constant folding during compilation; it must match
+// the VM's own LUA_VECTOR_DOUBLE build setting (see luaconf.h) to be meaningful.
+void hxluau_set_compile_vector_precision(int precision)
+{
+    if (precision == 0 || precision == 1)
+        g_compile_opts.vectorPrecision = precision;
 }
 
 void hxluau_set_compile_mutable_globals(const char* const* mutableGlobals)
