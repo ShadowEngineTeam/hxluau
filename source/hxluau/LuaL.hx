@@ -489,27 +489,6 @@ extern class LuaL
 	static function tolstring(L:cpp.RawPointer<Lua_State>, idx:Int, len:cpp.RawPointer<cpp.SizeT>):cpp.ConstCharStar;
 
 	/**
-	 * Calls a function with support for yielding C functions.
-	 * @param L Lua state.
-	 * @param nargs Number of arguments.
-	 * @param nresults Number of results (or `Lua.MULTRET`).
-	 * @return The status code.
-	 */
-	@:native('luaL_callyieldable')
-	static function callyieldable(L:cpp.RawPointer<Lua_State>, nargs:Int, nresults:Int):Int;
-
-	/**
-	 * Calls a function in protected mode with support for yielding C functions.
-	 * @param L Lua state.
-	 * @param nargs Number of arguments.
-	 * @param nresults Number of results (or `Lua.MULTRET`).
-	 * @param errfunc Stack index of the error handler, or 0 for none.
-	 * @return The status code.
-	 */
-	@:native('luaL_pcallyieldable')
-	static function pcallyieldable(L:cpp.RawPointer<Lua_State>, nargs:Int, nresults:Int, errfunc:Int):Int;
-
-	/**
 	 * Initializes a buffer with an initial size and returns a writable area.
 	 * @param L Lua state.
 	 * @param B The buffer.

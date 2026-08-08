@@ -34,7 +34,7 @@ ffi_call_win64 proc frame
 	mov	 ECX, [RBP + 24] ; movl	24(%rbp), %ecx
 	mov	R8, [RBP + 32] ; movq	32(%rbp), %r8
 	LEA	R10, ffi_call_win64_tab ; leaq	0f(%rip), %r10
-	CMP	ECX, (17 + 3) ; cmpl	$FFI_TYPE_SMALL_STRUCT_4B, %ecx
+	CMP	ECX, (18 + 3) ; cmpl	$FFI_TYPE_SMALL_STRUCT_4B, %ecx
 	LEA	R10, [R10 + RCX*8] ; leaq	(%r10, %rcx, 8), %r10
 	JA	L99 ; ja	99f
 	JMP	R10 ; jmp	*%r10
@@ -105,13 +105,15 @@ ALIGN 8; ORG 0b + (16) * 8
 ALIGN 8; ORG 0b + (17) * 8
 	movdqu	xmmword ptr [r8], xmm0
 	epilogue
-ALIGN 8; ORG 0b + ((17 + 1)) * 8
+ALIGN 8; ORG 0b + (18) * 8
+	call	abort
+ALIGN 8; ORG 0b + ((18 + 1)) * 8
 	mov byte ptr [r8], al ; movb	%al, (%r8)
 	epilogue
-ALIGN 8; ORG 0b + ((17 + 2)) * 8
+ALIGN 8; ORG 0b + ((18 + 2)) * 8
 	mov word ptr [r8], ax ; movw	%ax, (%r8)
 	epilogue
-ALIGN 8; ORG 0b + ((17 + 3)) * 8
+ALIGN 8; ORG 0b + ((18 + 3)) * 8
 	mov dword ptr [r8], eax ; movl	%eax, (%r8)
 	epilogue
 

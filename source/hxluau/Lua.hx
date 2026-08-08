@@ -1206,6 +1206,27 @@ extern class Lua
 	static function cpcall(L:cpp.RawPointer<Lua_State>, func:Lua_CFunction, ud:cpp.RawPointer<cpp.Void>):Int;
 
 	/**
+	 * Calls a function with support for yielding C functions.
+	 * @param L Lua state.
+	 * @param nargs Number of arguments.
+	 * @param nresults Number of results (or `Lua.MULTRET`).
+	 * @return The status code.
+	 */
+	@:native('lua_callyieldable')
+	static function callyieldable(L:cpp.RawPointer<Lua_State>, nargs:Int, nresults:Int):Int;
+
+	/**
+	 * Calls a function in protected mode with support for yielding C functions.
+	 * @param L Lua state.
+	 * @param nargs Number of arguments.
+	 * @param nresults Number of results (or `Lua.MULTRET`).
+	 * @param errfunc Stack index of the error handler, or 0 for none.
+	 * @return The status code.
+	 */
+	@:native('lua_pcallyieldable')
+	static function pcallyieldable(L:cpp.RawPointer<Lua_State>, nargs:Int, nresults:Int, errfunc:Int):Int;
+
+	/**
 	 * Whether the value is a 64-bit integer.
 	 * @param L Lua state.
 	 * @param idx Stack index.
