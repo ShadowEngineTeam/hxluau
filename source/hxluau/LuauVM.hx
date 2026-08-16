@@ -107,6 +107,17 @@ extern class LuauVM
 	static function compileConstantVector(constant:cpp.RawPointer<Lua_CompileConstant>, x:Float, y:Float, z:Float, w:Float):Void;
 
 	/**
+	 * Sets a compile constant to a vector, taking double-precision components.
+	 * @param constant The compile constant to set.
+	 * @param x X component.
+	 * @param y Y component.
+	 * @param z Z component.
+	 * @param w W component.
+	 */
+	@:native('luau_set_compile_constant_vectord')
+	static function compileConstantVectord(constant:cpp.RawPointer<Lua_CompileConstant>, x:Float, y:Float, z:Float, w:Float):Void;
+
+	/**
 	 * Sets a compile constant to a string.
 	 * @param constant The compile constant to set.
 	 * @param s The string value.

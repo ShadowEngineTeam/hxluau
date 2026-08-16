@@ -256,8 +256,8 @@ void ffi_java_raw_to_ptrarray (ffi_cif *cif, ffi_java_raw *raw, void **args) __a
 FFI_API
 size_t ffi_java_raw_size (ffi_cif *cif) __attribute__((deprecated));
 
-#define FFI_VERSION_STRING "3.5.2"
-#define FFI_VERSION_NUMBER 30502
+#define FFI_VERSION_STRING "3.8.0"
+#define FFI_VERSION_NUMBER 30800
 
 #ifndef LIBFFI_ASM
 FFI_API const char *ffi_get_version (void);
@@ -434,7 +434,11 @@ void ffi_call(ffi_cif *cif,
    ffi_call_plan_alloc returns NULL only on allocation failure; a signature
    with no fast path is still valid and ffi_call_plan_invoke falls back to
    ffi_call for it.  A plan is immutable once built, so it may be shared and
-   invoked concurrently from multiple threads.  */
+   invoked concurrently from multiple threads.
+
+   ffi_call_plan_size reports the total number of bytes libffi allocated for a
+   plan, so that callers tracking the footprint of long-lived plans do not have
+   to guess at the size of an opaque type.  */
 typedef struct ffi_call_plan ffi_call_plan;
 
 FFI_API
@@ -448,6 +452,9 @@ void ffi_call_plan_invoke (ffi_call_plan *plan,
 
 FFI_API
 void ffi_call_plan_free (ffi_call_plan *plan);
+
+FFI_API
+size_t ffi_call_plan_size (ffi_call_plan *plan);
 
 FFI_API
 ffi_status ffi_get_struct_offsets (ffi_abi abi, ffi_type *struct_type,

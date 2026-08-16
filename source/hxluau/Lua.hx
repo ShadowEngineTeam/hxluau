@@ -765,6 +765,34 @@ extern class Lua
 	static function getref(L:cpp.RawPointer<Lua_State>, ref:Int):Int;
 
 	/**
+	 * Creates a weak reference to the value at the given index.
+	 * Unlike `ref`, this does not keep the value alive.
+	 * @param L Lua state.
+	 * @param idx Index of the value to reference.
+	 * @return The weak reference id.
+	 */
+	@:native('lua_weakref')
+	static function weakref(L:cpp.RawPointer<Lua_State>, idx:Int):Int;
+
+	/**
+	 * Releases a weak reference.
+	 * @param L Lua state.
+	 * @param ref Weak reference id.
+	 * @return Always `Lua.NOREF`; can be assigned back to clear the caller's reference variable.
+	 */
+	@:native('lua_weakunref')
+	static function weakunref(L:cpp.RawPointer<Lua_State>, ref:Int):Int;
+
+	/**
+	 * Pushes the value held by a weak reference.
+	 * @param L Lua state.
+	 * @param ref Weak reference id (from `weakref`).
+	 * @return Type of the value pushed onto the stack.
+	 */
+	@:native('lua_getweakref')
+	static function getweakref(L:cpp.RawPointer<Lua_State>, ref:Int):Int;
+
+	/**
 	 * Calls a function (function and its arguments on the stack).
 	 * @param L Lua state.
 	 * @param nargs Number of arguments.
@@ -871,6 +899,14 @@ extern class Lua
 	static function totalbytes(L:cpp.RawPointer<Lua_State>, category:Int):cpp.SizeT;
 
 	/**
+	 * Returns the current allocation rate in bytes per second.
+	 * @param L Lua state.
+	 * @return Bytes allocated per second.
+	 */
+	@:native('lua_allocationrate')
+	static function allocationrate(L:cpp.RawPointer<Lua_State>):haxe.Int64;
+
+	/**
 	 * Sets the memory category for subsequent allocations.
 	 * @param L Lua state.
 	 * @param category Memory category.
@@ -912,6 +948,15 @@ extern class Lua
 	 */
 	@:native('lua_clonefunction')
 	static function clonefunction(L:cpp.RawPointer<Lua_State>, idx:Int):Void;
+
+	/**
+	 * Whether the function at the given index uses an export.
+	 * @param L Lua state.
+	 * @param idx Function index.
+	 * @return 1 if it does, 0 otherwise.
+	 */
+	@:native('lua_usesexport')
+	static function usesexport(L:cpp.RawPointer<Lua_State>, idx:Int):Int;
 
 	/**
 	 * Pushes a clone of the table at the given index.
@@ -1675,6 +1720,17 @@ extern class Lua
 	static function encodepointer(L:cpp.RawPointer<Lua_State>, p:cpp.SizeT):cpp.SizeT;
 
 	/**
+	 * Sets the key used by `encodepointer`.
+	 * @param L Lua state.
+	 * @param a First key word.
+	 * @param b Second key word.
+	 * @param c Third key word.
+	 * @param d Fourth key word.
+	 */
+	@:native('lua_setpointerencodekey')
+	static function setpointerencodekey(L:cpp.RawPointer<Lua_State>, a:haxe.Int64, b:haxe.Int64, c:haxe.Int64, d:haxe.Int64):Void;
+
+	/**
 	 * Returns the wall-clock time in seconds (no state needed).
 	 * @return The time.
 	 */
@@ -1767,6 +1823,24 @@ extern class Lua
 	static function singlestep(L:cpp.RawPointer<Lua_State>, enabled:Int):Void;
 
 	/**
+	 * Whether the function at the given level has custom execution data set.
+	 * @param L Lua state.
+	 * @param level Stack level.
+	 * @return 1 if it does, 0 otherwise.
+	 */
+	@:native('lua_hascustomexecution')
+	static function hascustomexecution(L:cpp.RawPointer<Lua_State>, level:Int):Int;
+
+	/**
+	 * Whether the function at the given level is running using custom execution.
+	 * @param L Lua state.
+	 * @param level Stack level.
+	 * @return 1 if it is, 0 otherwise.
+	 */
+	@:native('lua_incustomexecution')
+	static function incustomexecution(L:cpp.RawPointer<Lua_State>, level:Int):Int;
+
+	/**
 	 * Sets or clears a breakpoint in a function.
 	 * @param L Lua state.
 	 * @param funcindex Function index.
@@ -1776,6 +1850,14 @@ extern class Lua
 	 */
 	@:native('lua_breakpoint')
 	static function breakpoint(L:cpp.RawPointer<Lua_State>, funcindex:Int, line:Int, enabled:Int):Int;
+
+	/**
+	 * Whether execution is currently stopped at a breakpoint.
+	 * @param L Lua state.
+	 * @return 1 if at a breakpoint, 0 otherwise.
+	 */
+	@:native('lua_atbreakpoint')
+	static function atbreakpoint(L:cpp.RawPointer<Lua_State>):Int;
 
 	/**
 	 * Returns a stack-trace string. Not thread-safe.

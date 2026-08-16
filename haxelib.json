@@ -8,8 +8,8 @@
 		"haxe"
 	],
 	"description": "Haxe/hxcpp @:native bindings for Luau.",
-	"version": "1.2.2",
-	"releasenote": "Update to Luau 0.726 and libffi master.",
+	"version": "1.2.3",
+	"releasenote": "Update to Luau 0.734 and libffi 3.8.0, and bind the remaining lua_* and luau_* entry points.",
 	"contributors": [
 		"HomuHomu833"
 	],
