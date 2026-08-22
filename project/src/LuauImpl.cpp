@@ -20,7 +20,6 @@
 #define LUA_ERRFILE 7
 #endif
 
-// Forward declarations for codegen control state used below
 extern bool g_codegen_enabled;
 extern std::unordered_map<lua_State*, bool> g_codegen_created;
 
@@ -169,8 +168,7 @@ static void ensure_codegen_and_compile(lua_State* L)
     luau_codegen_compile(L, -1);
 }
 
-// Strips a UTF-8 BOM (bytes EF BB BF) from a source buffer, if present.
-// Returns the pointer past the BOM and adjusts size accordingly.
+// Strips a UTF-8 BOM if present, returning the pointer past it and adjusting size.
 static const char* stripBOM(const char* src, size_t& size)
 {
     if (size >= 3 &&
@@ -184,11 +182,9 @@ static const char* stripBOM(const char* src, size_t& size)
     return src;
 }
 
-// Global compile options used by luau_compile.
-// Uses designated initializers (rather than positional) so that upstream Luau
-// inserting/reordering fields in lua_CompileOptions (as happened with the
-// addition of vectorPrecision) fails to compile instead of silently
-// misaligning every field that follows.
+// Global compile options used by luau_compile. Designated rather than positional, so
+// that upstream reordering lua_CompileOptions fields (as happened with vectorPrecision)
+// fails to compile instead of silently misaligning every field that follows.
 static lua_CompileOptions g_compile_opts = {
     .optimizationLevel = 2,
     .debugLevel = 0,
@@ -244,12 +240,36 @@ void hxluau_enable_codegen(int enable)
     g_codegen_enabled = (enable != 0);
 }
 
-// Compiles and loads a string via Luau, like luaL_loadstring.
+// Shared with the require-by-string implementation, so that required modules honor the
+// same compile options and codegen settings as the other loaders.
+int hxluau_load_buffer(lua_State* L, const char* chunkname, const char* source, size_t sourceSize)
+{
+    GcGuard gc(L);
+
+    const char* src = stripBOM(source, sourceSize);
+
+    size_t bytecodeSize;
+    char* bytecode = luau_compile(src, sourceSize, &g_compile_opts, &bytecodeSize);
+
+    if (!bytecode)
+    {
+        lua_pushstring(L, "out of memory while compiling source");
+        return LUA_ERRMEM;
+    }
+
+    int loadResult = luau_load(L, chunkname, bytecode, bytecodeSize, 0);
+
+    if (loadResult == 0)
+        ensure_codegen_and_compile(L);
+
+    free(bytecode);
+    return loadResult;
+}
+
 int hxluau_loadstring_wrapper(lua_State* L, const char* s)
 {
     GcGuard gc(L);
 
-    // Strip the BOM if present.
     size_t srcSize = strlen(s);
     const char* src = stripBOM(s, srcSize);
 
@@ -271,7 +291,6 @@ int hxluau_loadstring_wrapper(lua_State* L, const char* s)
     return loadResult;
 }
 
-// Compiles and loads a file via Luau, like luaL_loadfile.
 int hxluau_loadfile_wrapper(lua_State* L, const char* filename)
 {
     GcGuard gc(L);
@@ -305,14 +324,11 @@ int hxluau_loadfile_wrapper(lua_State* L, const char* filename)
         return LUA_ERRFILE;
     }
 
-    // Strip the BOM if present.
     size_t srcSize = size;
     const char* src = stripBOM(buffer.data(), srcSize);
 
-    // Compute content hash for cache lookup
     uint64_t h = BytecodeCache::fnv1a64(src, srcSize);
 
-    // Try cache first
     std::string cached;
     bool haveCached = BytecodeCache::get(filename, h, cached);
 
@@ -343,7 +359,6 @@ int hxluau_loadfile_wrapper(lua_State* L, const char* filename)
     return loadResult;
 }
 
-// Compiles and runs a string, like luaL_dostring.
 int hxluau_dostring_wrapper(lua_State* L, const char* str)
 {
     int loadResult = hxluau_loadstring_wrapper(L, str);
@@ -352,7 +367,6 @@ int hxluau_dostring_wrapper(lua_State* L, const char* str)
     return loadResult;
 }
 
-// Compiles and runs a file, like luaL_dofile.
 int hxluau_dofile_wrapper(lua_State* L, const char* filename)
 {
     int loadResult = hxluau_loadfile_wrapper(L, filename);
@@ -382,14 +396,12 @@ static int hxluau_print(lua_State* L)
     return 0;
 }
 
-// Register the custom print into the global 'print'
 void hxluau_register_print(lua_State* L)
 {
     lua_pushcfunction(L, hxluau_print, "print");
     lua_setglobal(L, "print");
 }
 
-// VM soft reset. Collects garbage and resets the main thread without destroying the VM.
 void hxluau_vm_soft_reset(lua_State* L)
 {
     int running = lua_gc(L, LUA_GCISRUNNING, 0);
@@ -431,7 +443,6 @@ static void hxluau_interrupt_hook(lua_State* L, int gc)
     }
 }
 
-// Enable or disable the autocompile hook for a given state
 void hxluau_enable_autocompile(lua_State* L, int enable)
 {
     g_autocompile_enabled = (enable != 0);
@@ -441,7 +452,6 @@ void hxluau_enable_autocompile(lua_State* L, int enable)
         cbs->interrupt = g_autocompile_enabled ? hxluau_interrupt_hook : NULL;
 }
 
-// Set the hot-call threshold
 void hxluau_set_autocompile_threshold(int threshold)
 {
     g_autocompile_threshold = (threshold <= 0) ? 1 : threshold;
@@ -498,36 +508,30 @@ void hxluau_set_compile_disabled_builtins(const char* const* disabledBuiltins)
 
 const char* hxluau_version_string()
 {
-    return "Luau 0.733";
+    return "Luau 0.735";
 }
 
 const char* hxluau_version_release()
 {
-    return "Luau 0.733";
+    return "Luau 0.735";
 }
 
 int hxluau_version_num()
 {
-    return 733;
+    return 735;
 }
 
-// Tracks whether the caller opted into codegen counter recording.
-// The real gate is the C++ fast-flag FFlag::LuauCodegenCounterSupport inside
-// Luau, which the public C headers cannot reach. For full counter support an
-// embedder must both call hxluau_enable_counter_support(1) here and, from its
-// own C++ code, set FFlag::LuauCodegenCounterSupport.value = true before the
-// first codegen create or compile call.
-// hxluau_counter_support_enabled() exposes this flag so Haxe callers can read it.
+// Tracks whether the caller opted into codegen counter recording. The real gate is
+// FFlag::LuauCodegenCounterSupport inside Luau, which the public C headers cannot
+// reach: full counter support needs both this flag and, from the embedder's own C++,
+// FFlag::LuauCodegenCounterSupport.value = true before the first codegen call.
 static bool g_counter_support_enabled = false;
 
-// Enable or disable Luau codegen counter recording intent.
-// See comment above for the two-step requirement when using the full C++ path.
 void hxluau_enable_counter_support(int enable)
 {
     g_counter_support_enabled = (enable != 0);
 }
 
-// Returns 1 if counter support was enabled, 0 otherwise.
 int hxluau_counter_support_enabled()
 {
     return g_counter_support_enabled ? 1 : 0;

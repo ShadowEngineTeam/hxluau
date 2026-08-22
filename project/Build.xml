@@ -12,8 +12,14 @@
 		</section>
 		<compilerflag value="-I${haxelib:hxluau}/project/include" />
 		<compilerflag value="-DHXLUAU_DISABLE_FFI" if="HXLUAU_DISABLE_FFI" />
+		<compilerflag value="-DHXLUAU_DISABLE_REQUIRE" if="HXLUAU_DISABLE_REQUIRE" />
+		<section unless="HXLUAU_DISABLE_REQUIRE">
+			<compilerflag value="-I${haxelib:hxluau}/project/lib/luau/Require/include" />
+			<compilerflag value="-I${haxelib:hxluau}/project/lib/luau/CLI/include" />
+		</section>
 
 		<file name="${haxelib:hxluau}/project/src/LuauImpl.cpp" />
+		<file name="${haxelib:hxluau}/project/src/HxRequire.cpp" unless="HXLUAU_DISABLE_REQUIRE" />
 	</files>
 
 	<files id="__main__">
@@ -147,6 +153,29 @@
 		<file name="${haxelib:hxluau}/project/lib/luau/CodeGen/src/SharedCodeAllocator.cpp" />
 		<file name="${haxelib:hxluau}/project/lib/luau/CodeGen/src/UnwindBuilderDwarf2.cpp" />
 		<file name="${haxelib:hxluau}/project/lib/luau/CodeGen/src/UnwindBuilderWin.cpp" />
+
+		<section unless="HXLUAU_DISABLE_REQUIRE">
+			<compilerflag value="-I${haxelib:hxluau}/project/lib/luau/Config/include" />
+			<compilerflag value="-I${haxelib:hxluau}/project/lib/luau/Require/include" />
+			<compilerflag value="-I${haxelib:hxluau}/project/lib/luau/CLI/include" />
+
+			<!-- Luau.Config: parses .luaurc / .config.luau alias tables -->
+			<file name="${haxelib:hxluau}/project/lib/luau/Config/src/Config.cpp" />
+			<file name="${haxelib:hxluau}/project/lib/luau/Config/src/LinterConfig.cpp" />
+			<file name="${haxelib:hxluau}/project/lib/luau/Config/src/LuauConfig.cpp" />
+
+			<!-- Luau.Require -->
+			<file name="${haxelib:hxluau}/project/lib/luau/Require/src/AliasCycleTracker.cpp" />
+			<file name="${haxelib:hxluau}/project/lib/luau/Require/src/Navigation.cpp" />
+			<file name="${haxelib:hxluau}/project/lib/luau/Require/src/PathUtilities.cpp" />
+			<file name="${haxelib:hxluau}/project/lib/luau/Require/src/Require.cpp" />
+			<file name="${haxelib:hxluau}/project/lib/luau/Require/src/RequireImpl.cpp" />
+			<file name="${haxelib:hxluau}/project/lib/luau/Require/src/RequireNavigator.cpp" />
+
+			<!-- filesystem navigation context, shared with the upstream CLI -->
+			<file name="${haxelib:hxluau}/project/lib/luau/CLI/src/FileUtils.cpp" />
+			<file name="${haxelib:hxluau}/project/lib/luau/CLI/src/VfsNavigator.cpp" />
+		</section>
 
 		<!-- Luau.Inliner -->
 		<file name="${haxelib:hxluau}/project/lib/luau/Inliner/src/JitInliner.cpp" />

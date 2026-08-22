@@ -138,6 +138,12 @@ extern class Lua_Debug
 	/** Current line being executed. */
 	var currentline:Int;
 
+	/** Globally unique (within the VM) proto id; 0 for C functions. */
+	var protoid:Int;
+
+	/** Proto index within its bytecode module; -1 for C functions. */
+	var bytecodeid:Int;
+
 	/** Number of upvalues. */
 	var nupvals:cpp.UInt8;
 
@@ -155,6 +161,26 @@ extern class Lua_Debug
 typedef Lua_Hook = cpp.Callable<(L:cpp.RawPointer<Lua_State>, ar:cpp.RawPointer<Lua_Debug>) -> Void>;
 
 /** Destructor for a userdata type (`lua_Destructor`). */
+/** Names a memory category for `Lua.memorydump`. */
+typedef Lua_CategoryName = cpp.Callable<(L:cpp.RawPointer<Lua_State>, memcat:cpp.UInt8) -> cpp.ConstCharStar>;
+
+/** Userdata GC-mark callback; only read-only APIs are safe to call from it. */
+typedef Lua_UserdataMark = cpp.Callable<(L:cpp.RawPointer<Lua_State>, ud:cpp.RawPointer<cpp.Void>) -> Void>;
+
+/**
+ * Marks an embedder reference as reachable during GC.
+ *
+ * Bound as the opaque C typedef rather than a `cpp.Callable`, because it appears as a
+ * parameter of `Lua_EmbedderGc`: emitting `cpp::Function` there would not match the
+ * raw function pointer C declares, and the call would not compile.
+ */
+@:include('lua.h')
+@:native('lua_EmbedderMark')
+extern class Lua_EmbedderMark {}
+
+/** Embedder GC callback, invoked with the mark function to report live references. */
+typedef Lua_EmbedderGc = cpp.Callable<(L:cpp.RawPointer<Lua_State>, markref:Lua_EmbedderMark) -> Void>;
+
 typedef Lua_Destructor = cpp.Callable<(L:cpp.RawPointer<Lua_State>, userdata:cpp.RawPointer<cpp.Void>) -> Void>;
 
 /** Direct-access callback for getting or setting a userdata field. */

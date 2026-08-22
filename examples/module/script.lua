@@ -1,3 +1,3 @@
-local hello = require "hello"
+local hello = require("./hello")
 
-hello.sayHello("Lua")
+hello.sayHello("Luau")

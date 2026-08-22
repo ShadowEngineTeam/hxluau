@@ -881,6 +881,23 @@ extern class Lua
 	@:native('lua_gc')
 	static function gc(L:cpp.RawPointer<Lua_State>, what:Int, data:Int):Int;
 
+	/**
+	 * Writes a Luau memory dump to an open `FILE*`, in JSON format.
+	 * @param L Lua state.
+	 * @param file An open C `FILE*`.
+	 * @param categoryName Called to name each memory category, or null.
+	 */
+	@:native('lua_memorydump')
+	static function memorydump(L:cpp.RawPointer<Lua_State>, file:cpp.RawPointer<cpp.Void>, categoryName:Lua_CategoryName):Void;
+
+	/**
+	 * Sets the embedder GC callback, called to report references the embedder holds live.
+	 * @param L Lua state.
+	 * @param fn Embedder GC callback.
+	 */
+	@:native('lua_setembeddergc')
+	static function setembeddergc(L:cpp.RawPointer<Lua_State>, fn:Lua_EmbedderGc):Void;
+
 	/** GC option to set the heap goal as a percent of live data. */
 	@:native('LUA_GCSETGOAL')
 	static var GCSETGOAL:Int;
@@ -1757,7 +1774,7 @@ extern class Lua
 	 * Fills a debug record for the function at a call level.
 	 * @param L Lua state.
 	 * @param level Call level (0 is the current function).
-	 * @param what Info to retrieve ("n", "s", "l", "u", "a", "f").
+	 * @param what Info to retrieve ("n", "s", "l", "p", "u", "a", "f").
 	 * @param ar Record to fill.
 	 * @return 1 on success, 0 on failure.
 	 */
@@ -1813,6 +1830,16 @@ extern class Lua
 	 */
 	@:native('lua_setupvalue')
 	static function setupvalue(L:cpp.RawPointer<Lua_State>, funcindex:Int, n:Int):cpp.ConstCharStar;
+
+	/**
+	 * Invokes a debug hook on a thread in break or yield state. `userdata` reaches the
+	 * hook through `Lua_Debug.userdata`.
+	 * @param L Lua state.
+	 * @param hook Hook to invoke.
+	 * @param userdata Passed through to the hook.
+	 */
+	@:native('lua_callhook')
+	static function callhook(L:cpp.RawPointer<Lua_State>, hook:Lua_Hook, userdata:cpp.RawPointer<cpp.Void>):Void;
 
 	/**
 	 * Enables or disables debugger single-stepping.
@@ -1875,6 +1902,16 @@ extern class Lua
 	 */
 	@:native('lua_setuserdatadtor')
 	static function setuserdatadtor(L:cpp.RawPointer<Lua_State>, tag:Int, dtor:Lua_Destructor):Void;
+
+	/**
+	 * Sets the GC mark callback for a userdata tag. The callback must not reenter the
+	 * state; only read-only APIs such as `Lua.getthreaddata` are safe from it.
+	 * @param L Lua state.
+	 * @param tag Userdata tag.
+	 * @param markfn Mark callback.
+	 */
+	@:native('lua_setuserdatamark')
+	static function setuserdatamark(L:cpp.RawPointer<Lua_State>, tag:Int, markfn:Lua_UserdataMark):Void;
 
 	/**
 	 * Returns the destructor for a userdata tag.

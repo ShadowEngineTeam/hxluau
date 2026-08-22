@@ -5,4 +5,5 @@
 -main Main
 -cpp bin
 -cmd xcopy script.lua bin\ /Y /Q >nul 2>&1
+-cmd xcopy hello.lua bin\ /Y /Q >nul 2>&1
 -cmd bin\Main.exe

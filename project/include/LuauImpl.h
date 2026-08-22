@@ -3,12 +3,18 @@
 
 #include "lua.h"
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 // Compiles and loads a string via Luau, like luaL_loadstring.
 int hxluau_loadstring_wrapper(lua_State* L, const char* s);
+
+// Compiles `source` with the global compile options and loads it into L under
+// `chunkname`, applying codegen when enabled. Returns luau_load's status.
+int hxluau_load_buffer(lua_State* L, const char* chunkname, const char* source, size_t sourceSize);
 
 // Compiles and loads a file via Luau, like luaL_loadfile.
 int hxluau_loadfile_wrapper(lua_State* L, const char* filename);
