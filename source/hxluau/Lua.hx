@@ -1402,7 +1402,7 @@ extern class Lua
 	 * @param z Z component.
 	 */
 	@:native('lua_pushvector')
-	static function pushvector(L:cpp.RawPointer<Lua_State>, x:Float, y:Float, z:Float):Void;
+	static function pushvector(L:cpp.RawPointer<Lua_State>, x:Lua_VectorType, y:Lua_VectorType, z:Lua_VectorType):Void;
 
 	/**
 	 * Creates and pushes a buffer of the given size.
