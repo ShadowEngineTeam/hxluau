@@ -14,6 +14,54 @@ import hxluau.Types;
 @:unreflective
 extern class LuaOpen
 {
+	/** Global name the `coroutine` library registers under. */
+	@:native('::String(LUA_COLIBNAME)')
+	static var COLIBNAME(default, null):String;
+
+	/** Global name the `table` library registers under. */
+	@:native('::String(LUA_TABLIBNAME)')
+	static var TABLIBNAME(default, null):String;
+
+	/** Global name the `os` library registers under. */
+	@:native('::String(LUA_OSLIBNAME)')
+	static var OSLIBNAME(default, null):String;
+
+	/** Global name the `string` library registers under. */
+	@:native('::String(LUA_STRLIBNAME)')
+	static var STRLIBNAME(default, null):String;
+
+	/** Global name the `bit32` library registers under. */
+	@:native('::String(LUA_BITLIBNAME)')
+	static var BITLIBNAME(default, null):String;
+
+	/** Global name the `buffer` library registers under. */
+	@:native('::String(LUA_BUFFERLIBNAME)')
+	static var BUFFERLIBNAME(default, null):String;
+
+	/** Global name the `utf8` library registers under. */
+	@:native('::String(LUA_UTF8LIBNAME)')
+	static var UTF8LIBNAME(default, null):String;
+
+	/** Global name the `class` library registers under. */
+	@:native('::String(LUA_CLASSLIBNAME)')
+	static var CLASSLIBNAME(default, null):String;
+
+	/** Global name the `math` library registers under. */
+	@:native('::String(LUA_MATHLIBNAME)')
+	static var MATHLIBNAME(default, null):String;
+
+	/** Global name the `debug` library registers under. */
+	@:native('::String(LUA_DBLIBNAME)')
+	static var DBLIBNAME(default, null):String;
+
+	/** Global name the `vector` library registers under. */
+	@:native('::String(LUA_VECLIBNAME)')
+	static var VECLIBNAME(default, null):String;
+
+	/** Global name the `integer` library registers under. */
+	@:native('::String(LUA_INTLIBNAME)')
+	static var INTLIBNAME(default, null):String;
+
 	/**
 	 * Opens the `base` library.
 	 * @param L Lua state.

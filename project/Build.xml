@@ -13,6 +13,7 @@
 		<compilerflag value="-I${haxelib:hxluau}/project/include" />
 		<compilerflag value="-DHXLUAU_DISABLE_FFI" if="HXLUAU_DISABLE_FFI" />
 		<compilerflag value="-DHXLUAU_DISABLE_REQUIRE" if="HXLUAU_DISABLE_REQUIRE" />
+		<compilerflag value="-DLUA_VECTOR_DOUBLE=1" />
 		<section unless="HXLUAU_DISABLE_REQUIRE">
 			<compilerflag value="-I${haxelib:hxluau}/project/lib/luau/Require/include" />
 			<compilerflag value="-I${haxelib:hxluau}/project/lib/luau/CLI/include" />
@@ -31,6 +32,7 @@
 			<compilerflag value="-I${haxelib:hxluau}/project/lib/cffi/src" />
 		</section>
 		<compilerflag value="-I${haxelib:hxluau}/project/include" />
+		<compilerflag value="-DLUA_VECTOR_DOUBLE=1" />
 	</files>
 
 	<files id="luau">
@@ -45,6 +47,7 @@
 		<compilerflag value="-fno-math-errno" if="mingw" />
 
 		<compilerflag value="-DLUA_USE_LONGJMP=1" />
+		<compilerflag value="-DLUA_VECTOR_DOUBLE=1" />
 
 		<!-- Luau.Common -->
 		<file name="${haxelib:hxluau}/project/lib/luau/Common/src/BytecodeWire.cpp" />
@@ -192,6 +195,7 @@
 		<compilerflag value="-I${haxelib:hxluau}/project/lib/cffi/src" />
 		<compilerflag value="-DFFI_LITTLE_ENDIAN" />
 		<compilerflag value="-DFFI_STATIC_BUILD" />
+		<compilerflag value="-DLUA_VECTOR_DOUBLE=1" />
 
 		<file name="${haxelib:hxluau}/project/lib/cffi/src/main.cc" />
 		<file name="${haxelib:hxluau}/project/lib/cffi/src/lua.cc" />

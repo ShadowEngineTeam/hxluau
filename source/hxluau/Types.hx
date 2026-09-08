@@ -109,6 +109,15 @@ extern abstract Lua_Number from Float to Float {}
 @:notNull
 extern abstract Lua_Integer from Int to Int {}
 
+/** Vector component type (`LUA_VECTOR_TYPE`); `double` by default, `float` without `LUA_VECTOR_DOUBLE`. */
+@:buildXml('<include name="${haxelib:hxluau}/project/Build.xml" />')
+@:include('lua.h')
+@:native('LUA_VECTOR_TYPE')
+@:scalar
+@:coreType
+@:notNull
+extern abstract Lua_VectorType from Float to Float {}
+
 /** Activation record describing a function or call frame (`lua_Debug`). */
 @:buildXml('<include name="${haxelib:hxluau}/project/Build.xml" />')
 @:include('lua.h')

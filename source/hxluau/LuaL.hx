@@ -456,7 +456,7 @@ extern class LuaL
 	 * @return Pointer to 3 (or 4) floats.
 	 */
 	@:native('luaL_checkvector')
-	static function checkvector(L:cpp.RawPointer<Lua_State>, narg:Int):cpp.RawConstPointer<Single>;
+	static function checkvector(L:cpp.RawPointer<Lua_State>, narg:Int):cpp.RawConstPointer<Lua_VectorType>;
 
 	/**
 	 * Returns a vector argument, or `def` if absent or nil.
@@ -466,7 +466,7 @@ extern class LuaL
 	 * @return Pointer to 3 (or 4) floats.
 	 */
 	@:native('luaL_optvector')
-	static function optvector(L:cpp.RawPointer<Lua_State>, narg:Int, def:cpp.RawConstPointer<Single>):cpp.RawConstPointer<Single>;
+	static function optvector(L:cpp.RawPointer<Lua_State>, narg:Int, def:cpp.RawConstPointer<Lua_VectorType>):cpp.RawConstPointer<Lua_VectorType>;
 
 	/**
 	 * Checks that an argument is a buffer and returns it.

@@ -51,6 +51,7 @@ void hxluau_set_compile_coverage(int coverageLevel);
 void hxluau_set_compile_vector_lib(const char* lib);
 void hxluau_set_compile_vector_type(const char* type);
 void hxluau_set_compile_vector_ctor(const char* ctor);
+void hxluau_set_compile_vector_precision(int precision);
 void hxluau_set_compile_mutable_globals(const char* const* mutableGlobals);
 void hxluau_set_compile_userdata_types(const char* const* userdataTypes);
 void hxluau_set_compile_disabled_builtins(const char* const* disabledBuiltins);

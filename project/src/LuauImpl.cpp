@@ -193,7 +193,7 @@ static lua_CompileOptions g_compile_opts = {
     .vectorLib = nullptr,
     .vectorCtor = nullptr,
     .vectorType = nullptr,
-    .vectorPrecision = 0,
+    .vectorPrecision = LUA_VECTOR_DOUBLE,
     .mutableGlobals = nullptr,
     .userdataTypes = nullptr,
     .librariesWithKnownMembers = nullptr,
@@ -508,17 +508,17 @@ void hxluau_set_compile_disabled_builtins(const char* const* disabledBuiltins)
 
 const char* hxluau_version_string()
 {
-    return "Luau 0.736";
+    return "Luau 0.737";
 }
 
 const char* hxluau_version_release()
 {
-    return "Luau 0.736";
+    return "Luau 0.737";
 }
 
 int hxluau_version_num()
 {
-    return 736;
+    return 737;
 }
 
 // Tracks whether the caller opted into codegen counter recording. The real gate is

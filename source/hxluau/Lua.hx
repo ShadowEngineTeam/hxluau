@@ -198,6 +198,10 @@ extern class Lua
 	@:native('LUA_VECTOR_SIZE')
 	static var VECTOR_SIZE:Int;
 
+	/** 1 if the VM stores 64-bit double vector components, 0 for 32-bit floats. */
+	@:native('LUA_VECTOR_DOUBLE')
+	static var VECTOR_DOUBLE:Int;
+
 	/** Coroutine status when running. */
 	@:native('LUA_CORUN')
 	static var CORUN:Int;
@@ -1343,7 +1347,7 @@ extern class Lua
 	 * @return Pointer to 3 (or 4) floats, or null.
 	 */
 	@:native('lua_tovector')
-	static function tovector(L:cpp.RawPointer<Lua_State>, idx:Int):cpp.RawConstPointer<Single>;
+	static function tovector(L:cpp.RawPointer<Lua_State>, idx:Int):cpp.RawConstPointer<Lua_VectorType>;
 
 	/**
 	 * Converts the value to a 64-bit integer.
