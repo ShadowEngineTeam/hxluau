@@ -1559,6 +1559,36 @@ extern class Lua
 	static function costatus(L:cpp.RawPointer<Lua_State>, co:cpp.RawPointer<Lua_State>):Int;
 
 	/**
+	 * Reports whether any finalizers are attached in this state.
+	 *
+	 * Experimental upstream API: requires a Luau Debug flag and is subject to breaking changes.
+	 * @param L Lua state.
+	 * @return Non-zero when finalizers are present.
+	 */
+	@:native('lua_hasfinalizers')
+	static function hasfinalizers(L:cpp.RawPointer<Lua_State>):Int;
+
+	/**
+	 * Pushes the finalizer function onto the stack.
+	 *
+	 * Experimental upstream API: requires a Luau Debug flag and is subject to breaking changes.
+	 * @param L Lua state.
+	 */
+	@:native('lua_pushfinalizerfunction')
+	static function pushfinalizerfunction(L:cpp.RawPointer<Lua_State>):Void;
+
+	/**
+	 * Attaches the value at `idx` as a finalizer on the coroutine `co`.
+	 *
+	 * Experimental upstream API: requires a Luau Debug flag and is subject to breaking changes.
+	 * @param L Lua state.
+	 * @param co Thread the finalizer is attached to.
+	 * @param idx Stack index of the finalizer.
+	 */
+	@:native('lua_addfinalizer')
+	static function addfinalizer(L:cpp.RawPointer<Lua_State>, co:cpp.RawPointer<Lua_State>, idx:Int):Void;
+
+	/**
 	 * Returns a userdata block only if its tag matches.
 	 * @param L Lua state.
 	 * @param idx Stack index.
@@ -1767,6 +1797,19 @@ extern class Lua
 	static function callbacks(L:cpp.RawPointer<Lua_State>):cpp.RawPointer<Lua_Callbacks>;
 
 	/**
+	 * Installs the allocator backing the caged buffer heap.
+	 *
+	 * Must be called after `LuaL.newstate`/`Lua.newstate` and before the state creates any
+	 * buffer. The VM makes no assumptions about the cage's layout, and assumes the embedder
+	 * frees any memory it allocated once the associated state is closed.
+	 * @param L Lua state.
+	 * @param alloc Cage allocator.
+	 * @param ud User data passed to the allocator.
+	 */
+	@:native('lua_setbuffercage')
+	static function setbuffercage(L:cpp.RawPointer<Lua_State>, alloc:Lua_CageAlloc, ud:cpp.RawPointer<cpp.Void>):Void;
+
+	/**
 	 * Returns the current call-stack depth.
 	 * @param L Lua state.
 	 * @return The depth.
@@ -1930,11 +1973,11 @@ extern class Lua
 	 * Creates and pushes a userdata with a custom destructor.
 	 * @param L Lua state.
 	 * @param sz Block size.
-	 * @param dtor Called when the block is collected.
+	 * @param dtor Called with the state and the block when the block is collected.
 	 * @return Pointer to the block.
 	 */
 	@:native('lua_newuserdatadtor')
-	static function newuserdatadtor(L:cpp.RawPointer<Lua_State>, sz:cpp.SizeT, dtor:cpp.Callable<(raw:cpp.RawPointer<cpp.Void>) -> Void>):cpp.RawPointer<cpp.Void>;
+	static function newuserdatadtor(L:cpp.RawPointer<Lua_State>, sz:cpp.SizeT, dtor:Lua_Destructor):cpp.RawPointer<cpp.Void>;
 
 	/**
 	 * Reports code-coverage data for a function.

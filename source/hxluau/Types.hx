@@ -23,6 +23,14 @@ typedef Lua_Continuation = cpp.Callable<(L:cpp.RawPointer<Lua_State>, status:Int
 /** Realloc-style memory allocator. An `nsize` of 0 frees `ptr`. Returns the new block. */
 typedef Lua_Alloc = cpp.Callable<(ud:cpp.RawPointer<cpp.Void>, ptr:cpp.RawPointer<cpp.Void>, osize:cpp.SizeT, nsize:cpp.SizeT) -> cpp.RawPointer<cpp.Void>>;
 
+/**
+ * Realloc-style allocator for the caged buffer heap (`lua_CageAlloc`).
+ *
+ * `type` is an opaque, embedder-defined identifier for the caged allocation; the VM makes
+ * no assumptions about the cage's layout. Install with `Lua.setbuffercage`.
+ */
+typedef Lua_CageAlloc = cpp.Callable<(ud:cpp.RawPointer<cpp.Void>, ptr:cpp.RawPointer<cpp.Void>, osize:cpp.SizeT, nsize:cpp.SizeT, type:Int) -> cpp.RawPointer<cpp.Void>>;
+
 /** Opaque compile-constant handle passed to luacode callbacks. */
 typedef Lua_CompileConstant = cpp.RawPointer<cpp.Void>;
 
@@ -169,7 +177,6 @@ extern class Lua_Debug
 /** Debug hook invoked on specific VM events. */
 typedef Lua_Hook = cpp.Callable<(L:cpp.RawPointer<Lua_State>, ar:cpp.RawPointer<Lua_Debug>) -> Void>;
 
-/** Destructor for a userdata type (`lua_Destructor`). */
 /** Names a memory category for `Lua.memorydump`. */
 typedef Lua_CategoryName = cpp.Callable<(L:cpp.RawPointer<Lua_State>, memcat:cpp.UInt8) -> cpp.ConstCharStar>;
 
@@ -190,6 +197,7 @@ extern class Lua_EmbedderMark {}
 /** Embedder GC callback, invoked with the mark function to report live references. */
 typedef Lua_EmbedderGc = cpp.Callable<(L:cpp.RawPointer<Lua_State>, markref:Lua_EmbedderMark) -> Void>;
 
+/** Destructor for a userdata type (`lua_Destructor`). */
 typedef Lua_Destructor = cpp.Callable<(L:cpp.RawPointer<Lua_State>, userdata:cpp.RawPointer<cpp.Void>) -> Void>;
 
 /** Direct-access callback for getting or setting a userdata field. */

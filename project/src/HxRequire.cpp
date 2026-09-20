@@ -320,7 +320,7 @@ static HxRequirer* createRequirer(lua_State* L, const char* baseDir)
     void* mem = lua_newuserdatadtor(
         L,
         sizeof(HxRequirer),
-        [](void* data)
+        [](lua_State*, void* data)
         {
             static_cast<HxRequirer*>(data)->~HxRequirer();
         }
