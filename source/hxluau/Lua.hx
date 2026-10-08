@@ -1797,17 +1797,17 @@ extern class Lua
 	static function callbacks(L:cpp.RawPointer<Lua_State>):cpp.RawPointer<Lua_Callbacks>;
 
 	/**
-	 * Installs the allocator backing the caged buffer heap.
+	 * Installs the allocator backing the caged heap.
 	 *
 	 * Must be called after `LuaL.newstate`/`Lua.newstate` and before the state creates any
-	 * buffer. The VM makes no assumptions about the cage's layout, and assumes the embedder
-	 * frees any memory it allocated once the associated state is closed.
+	 * additional objects. The VM makes no assumptions about the cage's layout, and assumes the
+	 * embedder frees any memory it allocated once the associated main state is closed.
 	 * @param L Lua state.
 	 * @param alloc Cage allocator.
 	 * @param ud User data passed to the allocator.
 	 */
-	@:native('lua_setbuffercage')
-	static function setbuffercage(L:cpp.RawPointer<Lua_State>, alloc:Lua_CageAlloc, ud:cpp.RawPointer<cpp.Void>):Void;
+	@:native('lua_setmemorycage')
+	static function setmemorycage(L:cpp.RawPointer<Lua_State>, alloc:Lua_CageAlloc, ud:cpp.RawPointer<cpp.Void>):Void;
 
 	/**
 	 * Returns the current call-stack depth.

@@ -24,10 +24,10 @@ typedef Lua_Continuation = cpp.Callable<(L:cpp.RawPointer<Lua_State>, status:Int
 typedef Lua_Alloc = cpp.Callable<(ud:cpp.RawPointer<cpp.Void>, ptr:cpp.RawPointer<cpp.Void>, osize:cpp.SizeT, nsize:cpp.SizeT) -> cpp.RawPointer<cpp.Void>>;
 
 /**
- * Realloc-style allocator for the caged buffer heap (`lua_CageAlloc`).
+ * Realloc-style allocator for the caged heap (`lua_CageAlloc`).
  *
- * `type` is an opaque, embedder-defined identifier for the caged allocation; the VM makes
- * no assumptions about the cage's layout. Install with `Lua.setbuffercage`.
+ * `type` is an opaque, VM-defined value identifying the allocation kind; keeping different
+ * kinds apart is recommended. Install with `Lua.setmemorycage`.
  */
 typedef Lua_CageAlloc = cpp.Callable<(ud:cpp.RawPointer<cpp.Void>, ptr:cpp.RawPointer<cpp.Void>, osize:cpp.SizeT, nsize:cpp.SizeT, type:Int) -> cpp.RawPointer<cpp.Void>>;
 
