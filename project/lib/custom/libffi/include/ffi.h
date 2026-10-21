@@ -277,6 +277,9 @@ typedef struct {
   void *trampoline_table;
   void *trampoline_table_entry;
 #else
+#ifdef __GNUC__
+  __extension__
+#endif
   union {
     char tramp[FFI_TRAMPOLINE_SIZE];
     void *ftramp;

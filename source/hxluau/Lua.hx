@@ -1561,7 +1561,7 @@ extern class Lua
 	/**
 	 * Reports whether any finalizers are attached in this state.
 	 *
-	 * Experimental upstream API: requires a Luau Debug flag and is subject to breaking changes.
+	 * Requires the Luau `LuauCoroutineFinally` flag.
 	 * @param L Lua state.
 	 * @return Non-zero when finalizers are present.
 	 */
@@ -1569,18 +1569,20 @@ extern class Lua
 	static function hasfinalizers(L:cpp.RawPointer<Lua_State>):Int;
 
 	/**
-	 * Pushes the finalizer function onto the stack.
+	 * Pushes a function that runs the pending finalizers of `co` when called.
 	 *
-	 * Experimental upstream API: requires a Luau Debug flag and is subject to breaking changes.
+	 * Requires the Luau `LuauCoroutineFinally` flag. `co` must have finalizers and must not be `L`.
 	 * @param L Lua state.
+	 * @param co Thread whose finalizers are run.
+	 * @param toclose Non-zero to cancel a suspended or not yet started `co` (it is reset); zero to finalize a finished or errored `co`.
 	 */
 	@:native('lua_pushfinalizerfunction')
-	static function pushfinalizerfunction(L:cpp.RawPointer<Lua_State>):Void;
+	static function pushfinalizerfunction(L:cpp.RawPointer<Lua_State>, co:cpp.RawPointer<Lua_State>, toclose:Int):Void;
 
 	/**
 	 * Attaches the value at `idx` as a finalizer on the coroutine `co`.
 	 *
-	 * Experimental upstream API: requires a Luau Debug flag and is subject to breaking changes.
+	 * Requires the Luau `LuauCoroutineFinally` flag.
 	 * @param L Lua state.
 	 * @param co Thread the finalizer is attached to.
 	 * @param idx Stack index of the finalizer.

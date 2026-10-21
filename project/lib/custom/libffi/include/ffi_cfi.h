@@ -1,6 +1,8 @@
 /* -----------------------------------------------------------------------
    ffi_cfi.h - Copyright (c) 2014  Red Hat, Inc.
 
+   Conditionally assemble cfi directives. Only necessary for building libffi.
+
    Permission is hereby granted, free of charge, to any person
    obtaining a copy of this software and associated documentation
    files (the ``Software''), to deal in the Software without
