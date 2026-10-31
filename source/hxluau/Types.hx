@@ -194,8 +194,13 @@ typedef Lua_UserdataMark = cpp.Callable<(L:cpp.RawPointer<Lua_State>, ud:cpp.Raw
 @:native('lua_EmbedderMark')
 extern class Lua_EmbedderMark {}
 
-/** Embedder GC callback, invoked with the mark function to report live references. */
-typedef Lua_EmbedderGc = cpp.Callable<(L:cpp.RawPointer<Lua_State>, markref:Lua_EmbedderMark) -> Void>;
+/**
+ * Embedder GC callback, invoked with the mark function to report live references.
+ *
+ * Called with a null `markref` to reset a cycle. During marking, return nonzero if any
+ * new reference was marked; the GC propagates and calls again until it returns zero.
+ */
+typedef Lua_EmbedderGc = cpp.Callable<(L:cpp.RawPointer<Lua_State>, markref:Lua_EmbedderMark) -> Int>;
 
 /** Destructor for a userdata type (`lua_Destructor`). */
 typedef Lua_Destructor = cpp.Callable<(L:cpp.RawPointer<Lua_State>, userdata:cpp.RawPointer<cpp.Void>) -> Void>;
