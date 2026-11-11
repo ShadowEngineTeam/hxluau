@@ -508,12 +508,12 @@ void hxluau_set_compile_disabled_builtins(const char* const* disabledBuiltins)
 
 const char* hxluau_version_string()
 {
-    return "Luau 0.745";
+    return "Luau 0.746";
 }
 
 const char* hxluau_version_release()
 {
-    return "Luau 0.745";
+    return "Luau 0.746";
 }
 
 int hxluau_version_num()
